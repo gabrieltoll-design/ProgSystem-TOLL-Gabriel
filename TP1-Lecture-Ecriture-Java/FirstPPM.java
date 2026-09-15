@@ -7,7 +7,7 @@ public class FirstPPM {
             FileWriter writer = new FileWriter("FirstPPPM.ppm");
 
             writer.write("P3\n");
-            writer.write("3 2\n");
+            writer.write(String.valueOf(3) + " " + String.valueOf(4) + "\n");
             writer.write("255\n");
             writer.write("255 0 0 0 255 0 0 0 255\n");
             writer.write("255 255 0 255 255 255 0 0 0\n");
