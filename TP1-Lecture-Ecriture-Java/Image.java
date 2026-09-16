@@ -39,12 +39,21 @@ public class Image {
         writer.write("P3\n");
         writer.write(String.valueOf(this.height) + " " + String.valueOf(this.width) + "\n");
 
-        for (int y = this.height ; y > 0 ; y--){
+        for (int y = this.height+1 ; y > 0 ; y--){
             for (int x = 0 ; x < this.width-1 ; x++){
                 writer.write(this.pixels[x][y][0] + " " + this.pixels[x][y][1] + " " + this.pixels[x][y][2] + " ");
             }
             writer.write("\n");
         }
+    }
 
+    /**
+     * Sauvegarde l'image au format binaire
+     */
+    public void write_bin(String filename){
+
+
+
+        
     }
 }
