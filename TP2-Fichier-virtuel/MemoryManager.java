@@ -1,4 +1,5 @@
 import java.io.*;
+import TP2-Fichier-virtuel.Utils;
 
 public class MemoryManager {
 
@@ -32,16 +33,18 @@ public class MemoryManager {
     private void initializeFilesystem() {
         writeSuperblock();
 
-        for (int i = 0; i<129;i++){
+        for (int i = 0; i < 129; i++) {
             memory[BITMAP_OFFSET + i] = (byte) 0xFF;
         }
+    }
 
     private void writeSuperblock() {
 
-        //CORRECTION ?
+        /*CORRECTION ?
         int offset = 0;
         offset += writeStr(memory,offset,16);
         offset += writeInt(memory,offset,BLOCK_SIZE);
+        */
 
         Utils.writeString(
                 memory,
@@ -96,7 +99,7 @@ public class MemoryManager {
             //du masque sont ce que on veut garder
             //et le seul 0 transforme le bit visé
             //en 0
-            memory[offset] &= ~(1<<bitPosition)
+            memory[offset] &= ~(1<<bitPosition);
         }
 
         return true;
@@ -125,17 +128,21 @@ public class MemoryManager {
         */
 
         //Correction
-        return bitChercher &x01;
+        return bitChercher &0x01;
     }
 
     public int allocateBlock() {
         return -1;
     }
 
-
-
-
     public byte[] getFilesystemMemory() {
         return memory;
     }
+
+
+
+
+
+
+
 }
