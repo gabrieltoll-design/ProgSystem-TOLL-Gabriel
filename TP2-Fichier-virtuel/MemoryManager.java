@@ -37,8 +37,11 @@ public class MemoryManager {
         }
 
     private void writeSuperblock() {
-        // TODO:
-        // Utiliser Utils pour écrire les métadonnées.
+
+        //CORRECTION ?
+        int offset = 0;
+        offset += writeStr(memory,offset,16);
+        offset += writeInt(memory,offset,BLOCK_SIZE);
 
         Utils.writeString(
                 memory,
@@ -109,20 +112,23 @@ public class MemoryManager {
         int byteIndex = blockNumber / 8;
         int bitPosition = blockNumber % 8;
         int offset = BITMAP_OFFSET + byteIndex;
-        // Lire le bit.
 
+        //Ici on déplace le bit cherché jusque a la position la
+        //plus a droite possible
+        int bitChercher = memory[offset] >> bitPosition;
+
+        /* Ce que j'ai fait
+        if(bitChercher &=1){
+            return 1
+        }
         return -1;
+        */
+
+        //Correction
+        return bitChercher &x01;
     }
 
     public int allocateBlock() {
-
-        // TODO:
-        // Parcourir les blocs de données :
-        // 129 .. NUM_BLOCKS - 1.
-        //
-        // Retourner le premier bloc libre.
-        // Le marquer immédiatement comme utilisé.
-
         return -1;
     }
 
