@@ -1,5 +1,4 @@
-import java.io.*;
-import tp2.Utils;
+package tp2.tp2;
 
 public class MemoryManager {
 
@@ -34,7 +33,12 @@ public class MemoryManager {
         writeSuperblock();
 
         for (int i = 0; i < 129; i++) {
-            memory[BITMAP_OFFSET + i] = (byte) 0xFF;
+            setBlockUsed(i, true);
+        }
+
+        for (int i = 0; i < MAX_INODES; i++) {
+            int inodeOffset = INODE_TABLE_OFFSET + i * INODE_SIZE;
+            Utils.writeInt(memory, inodeOffset, -1);
         }
     }
 
@@ -107,9 +111,8 @@ public class MemoryManager {
 
     public int isBlockUsed(int blockNumber) {
 
-        if (blockNumber < 0 ||
-                blockNumber >= NUM_BLOCKS) {
-            return -1;
+        if (blockNumber < 0 || blockNumber >= NUM_BLOCKS) {
+            return -1; // Considéré comme invalide/occupé si hors limites
         }
 
         int byteIndex = blockNumber / 8;
@@ -132,17 +135,18 @@ public class MemoryManager {
     }
 
     public int allocateBlock() {
+        for (int i = 129; i < NUM_BLOCKS; i++) {
+            if (isBlockUsed(i) != 1) {
+                setBlockUsed(i, true);
+                return i;
+            }
+        }
         return -1;
     }
 
     public byte[] getFilesystemMemory() {
         return memory;
     }
-
-
-
-
-
 
 
 }
