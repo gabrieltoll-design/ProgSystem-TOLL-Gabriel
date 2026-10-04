@@ -40,9 +40,13 @@ public class Inode {
         for (int i = 0; i < DIRECT_POINTERS; i++) {
             pointers[i] = Utils.readInt(memory,(getInodeOffset()+28)+4*i);
         }
-
         return pointers;
+    }
 
+    public long getCreationTime(){ //sert pour écrire un fichier (VirtualFileSystem)
+        byte[] memory = memoryManager.getFilesystemMemory();
+        int offset = getInodeOffset() + 12;
+        return Utils.readLong(memory, offset);
     }
 
     public void writeToMemory(
