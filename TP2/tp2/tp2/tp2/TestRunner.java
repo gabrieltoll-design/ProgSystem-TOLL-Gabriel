@@ -1,8 +1,12 @@
 package tp2.tp2;
 
+import java.io.FileReader;
+import java.io.IOException;
+
 public class TestRunner {
 
     public static void main(String[] args) {
+
         testStep2();
         testStep3();
         testStep4();
@@ -11,6 +15,17 @@ public class TestRunner {
         testStep7();
         testStep8();
         testStep9();
+        //testStep10(); Dans etape 12 mais pas donné dans le sujet.
+
+        if (args.length > 0) {
+            testExternalFile(args[0]);
+        } else {
+            System.out.println(
+                    "[INFO] Aucun fichier externe fourni.");
+        } //Non tester.
+
+        System.out.println(
+                "=== TOUS LES TESTS SONT TERMINÉS ===");
     }
 
     public static void testStep2() {
@@ -395,5 +410,82 @@ public class TestRunner {
         }
 
         System.out.println("[OK] Étape 9 validée !");
+    }
+
+
+
+
+
+    public static void testExternalFile(
+            String filename) {
+
+        System.out.println(
+                "=== TEST FICHIER EXTERNE ===");
+
+        StringBuilder builder =
+                new StringBuilder();
+
+        try (FileReader reader =
+                     new FileReader(filename)) {
+
+            char[] buffer =
+                    new char[1024];
+
+            int count;
+
+            while ((count =
+                    reader.read(buffer)) != -1) {
+
+                builder.append(
+                        buffer,
+                        0,
+                        count);
+            }
+
+        } catch (IOException e) {
+            throw new AssertionError(
+                    "Impossible de lire le fichier externe",
+                    e);
+        }
+
+        String content =
+                builder.toString();
+
+        byte[] original =
+                content.getBytes();
+
+        VirtualFileSystem vfs =
+                new VirtualFileSystem();
+
+        assert vfs.createFile(
+                "/",
+                "external.txt") :
+                "Impossible de créer le fichier VFS";
+
+        assert vfs.writeFile(
+                0,
+                original) :
+                "Impossible d'écrire le fichier externe";
+
+        byte[] recovered =
+                vfs.readFile(0);
+
+        assert recovered != null :
+                "Les données récupérées sont nulles";
+
+        assert recovered.length
+                == original.length :
+                "Taille du fichier différente";
+
+        for (int i = 0;
+             i < original.length;
+             i++) {
+
+            assert recovered[i] == original[i] :
+                    "Différence à l'octet " + i;
+        }
+
+        System.out.println(
+                "[OK] Fichier externe correctement transféré !");
     }
 }

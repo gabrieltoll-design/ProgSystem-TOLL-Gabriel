@@ -1,0 +1,41 @@
+Question 1 : Représentation binaire :
+Il est nécessaire de définir quel endiant est utilisée puisque celui ci definit dans quel ordre il faut lire ou écrire les bits
+si jamais la methode readInt et writeInt n'était pas faites avec le meme endiant alors read pourait trés bien lire a l'envers les
+octets de la mémoire.
+
+Question 2 : Signes et octets
+memory[offset] & 0xFF est important dans la reconstruction de l'octet car 0xFF est l'équivalent de 255(10) ou de 11111111(2) c'est donc
+une masque binaire  qui garde les 8 bits de droite d'un nombre et met tout les autres a 0. Cette instruction permet de donc de recuperer l'octet
+de poids faible de plus 0xFF regle le probleme d'extension de signe , en effet , java garde les bytes signés donc si on veut utiliser un byte et
+le décaler (comme sur read et write de utils) java va passer mon byte en int ce qui va avoir pour effet d'étendre le bit de signe ce qui va rendre
+le nombre inutile , l'opération &0xFF permet de supprimer les 1 en trop et de ne garder que le chiffre que je voulais.
+
+Question 3 : Sérialisation
+tester uniquement readInt(writeInt(x)) == x peut etre insuffisant car il est possible que les deux methodes soit mal écrite par exemple dans le
+mauvais endiant , readInt(writeInt(x)) == x renverais true alors que ils ne font pas la bonne chose. C'est pour ca que l'inspection des octets
+permet de savoir exactement ce qui ce passe et de tester si c'est le comportement souhaité.
+
+Question 4 : Bitmap
+Une bitmap est plus compacte qu’une représentation utilisant un entier par bloc car elle représente 32 bloc par entier soit litéralement 32 fois
+plus de bloc pour le meme espace.
+
+TailleBitmap = NbBloc/8 puisque la bitmap est un tableau de byte qui font 1 octet
+
+Question 5 : Layout
+Les zones mémoire déterministe permette que l'OS sache ou est quoi sur le disque c'est également pour ceci que rien ne bouge ca permet
+d'avoir des chemins fixe pour le superblock,le bitmap et les offset de début de chaque block/secteurs. Si jamais les la position du bitmap changeait
+sans mettre a jour les méthodes , celle ci marcherais aléatoirement par exemple pour l'allocation qui cherche dans le bitmap si un bloc est
+utilisé ou non alors il regarderais a un emplacement mémoire ou il y a autre chose que la bitmap et regarderais un bit qui représente autre chose.
+
+Question 6 : Inode
+Separer les metadonnées du contenue permet de les retrouver et de les modifier plus facilement , ensuite l'inode ne contient que des pointeurs et donc aucun contenue.
+cela permet donc d'aller chercher dans la mémoire son "contenue" sans rien contenire elle meme.
+
+Question 7 : Allocation
+Les 128 premiers blocks sont reservé pour des usages spécifiques (superblock , bitmap etc). Si on commencait a partir du bloc 0 l'algorithme pourrait écrire des données
+dans des endroits laissé libre exprés.
+
+Question 8 : Fragmentation
+Oui ,il est possible que les deux type de fragmentation laisse le meme nombre de block libre :
+B1 = Occupé B2 = libre B3 = Occupé B4 = libre  , internal
+B1 = Occupé B2 = Occupé B3 = Libre B4 = Libre , external
