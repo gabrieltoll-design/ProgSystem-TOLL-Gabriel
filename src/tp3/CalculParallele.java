@@ -12,19 +12,21 @@ public class CalculParallele {
         for (int i = 0; i < DONNEES.length; i++) {
             threads[i]= new Calcule(DONNEES[i],MULTIPLICATEUR,i);
         }
-        //Start tout les threads pour un calcule parallele
+
+        //Start tout les threads pour un calcule parallele (on peut aussi juste mettre le start dans la boucle d'avant)
         for (int i = 0 ; i<threads.length;i++){
             threads[i].start();
         }
+
         //Une fois que tout les threads sont start on les join et on Additionne le resultat.
         for (int i = 0 ; i<threads.length;i++){
             try {
-                threads[i].join();
+                threads[i].join(); //Opération blocante et passive qui attend chaque résultat
             } catch (InterruptedException e) {
                 System.out.print(e);
             }
 
-            total += threads[i].getResultat();
+            total += threads[i].getResultat(); //Réduction
         }
 
         System.out.println(total);

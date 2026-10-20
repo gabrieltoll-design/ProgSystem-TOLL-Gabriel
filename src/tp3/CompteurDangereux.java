@@ -18,7 +18,7 @@ public class CompteurDangereux {
                 //Le probleme est que compteurGlobal est modifer par plusieurs threads en meme temps
                 compteurGlobal++;  // RACE CONDITION ICI !
             }
-            System.out.println(nom + " terminé. Compteur vu : " + compteurGlobal);
+            //System.out.println(nom + " terminé. Compteur vu : " + compteurGlobal);
         }
     }
 

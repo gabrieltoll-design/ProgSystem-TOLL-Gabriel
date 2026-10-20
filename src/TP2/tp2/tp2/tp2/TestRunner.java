@@ -1,4 +1,4 @@
-package tp2.tp2;
+package TP2.tp2.tp2.tp2;
 
 import java.io.FileReader;
 import java.io.IOException;

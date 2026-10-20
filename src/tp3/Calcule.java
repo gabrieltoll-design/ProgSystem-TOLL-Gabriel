@@ -4,7 +4,7 @@ public class Calcule extends Thread {
 
     private int valeurTh;
     private int multiplicateurTh;
-    private  int indexTh;
+    private int indexTh;
     private int resultat = 0;
 
     public Calcule(int valeur , int multiplicateur , int index){

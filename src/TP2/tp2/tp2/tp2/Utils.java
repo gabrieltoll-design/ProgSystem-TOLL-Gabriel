@@ -1,4 +1,4 @@
-package tp2.tp2;
+package TP2.tp2.tp2.tp2;
 
 public class Utils {
 
